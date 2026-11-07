@@ -11,13 +11,14 @@ packages:
   # whole set: per-user apps not listed here are uninstalled (their data in
   # ~/.var/app stays).
   flatpak:
-    - com.bitwarden.desktop     # passwords, and the SSH agent (for git push)
+    - com.bitwarden.desktop                   # passwords, and the SSH agent (for git push)
     - io.github.celluloid_player.Celluloid
     - org.libreoffice.LibreOffice
     - org.localsend.localsend_app
     - net.ankiweb.Anki
-    - org.gnome.Extensions      # GNOME Shell extensions: turn on/off and configure the installed ones
-    - io.gitlab.ilshat_apps.manuscript     # Markdown Reader
+    - org.gnome.Extensions                    # GNOME Shell extensions: turn on/off and configure the installed ones
+    - io.gitlab.ilshat_apps.manuscript        # Markdown Reader
+    - com.bilingify.readest                   # EPUB reader
 
 fonts:
   # Bump a version to make the font script download it again, together with
