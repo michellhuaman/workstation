@@ -64,7 +64,7 @@ home/                           the dotfiles: chezmoi's source
   dot_gitconfig           Git name, email, editor
   private_dot_ssh/        ~/.ssh/config: Bitwarden's agent for every host
   dot_config/             ~/.config (Alacritty, bat, mise, starship, tmux, systemd, ...)
-    autostart/            apps started at login: Bitwarden (the SSH agent), Brave and Claude Desktop (apt packages)
+    autostart/            apps started at login: Bitwarden (the SSH agent) and Brave (apt package)
     rclone/               rclone.conf, created once from Bitwarden (see "Google Drive")
     systemd/user/         user units, rclone-drive.service among them (mounts Google Drive)
   symlink_drive.tmpl      ~/drive, a link to the Google Drive mount
