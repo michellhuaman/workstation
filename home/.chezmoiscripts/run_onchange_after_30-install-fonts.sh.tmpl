@@ -1,35 +1,41 @@
 #!/bin/bash
-# The JetBrainsMono Nerd Font. Reruns when the font version changes.
+# The Nerd Fonts in .chezmoidata/packages.yaml. Reruns when the version or the
+# list of fonts changes.
 #
-# Downloaded and checked against the checksum pinned in
-# .chezmoidata/packages.yaml, and unpacked next to the installed copy, which
-# is only replaced once all of that worked: a failed download or a wrong
-# checksum leaves the current font in place (and exits with an error, so
-# chezmoi tries again on the next apply).
+# Each is downloaded and checked against the checksum pinned there, and
+# unpacked next to the installed copy, which is only replaced once all of that
+# worked: a failed download or a wrong checksum leaves the current font in
+# place (and exits with an error, so chezmoi tries again on the next apply).
 fontdir="$HOME/.local/share/fonts"
-dest="$fontdir/JetBrainsMonoNerdFont"
-
-echo "==> JetBrainsMono Nerd Font {{ .fonts.nerd_fonts }}"
-mkdir -p "$fontdir"
-tmp="$(mktemp -d "$fontdir/.JetBrainsMonoNerdFont.XXXXXX")"
+tmp=""
 trap 'rm -rf "$tmp"' EXIT
-curl -fsSL --retry 4 --retry-delay 5 -o "$tmp/font.tar.xz" \
-  "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ .fonts.nerd_fonts }}/JetBrainsMono.tar.xz"
-echo "{{ .fonts.nerd_fonts_sha256 }}  $tmp/font.tar.xz" | sha256sum -c --quiet - \
-  || { echo "!! JetBrainsMono.tar.xz doesn't match the checksum in packages.yaml; font left as it was" >&2; exit 1; }
-mkdir "$tmp/font"
-tar -xJ -C "$tmp/font" -f "$tmp/font.tar.xz"
-rm -rf "$dest"
-mv "$tmp/font" "$dest"
-# The download folder goes before fc-cache scans $fontdir, which it's in.
-rm -rf "$tmp"
+mkdir -p "$fontdir"
 
+install_font() {
+  local name="$1" sha="$2" dest="$fontdir/$1NerdFont"
+  echo "==> $name Nerd Font {{ .fonts.nerd_fonts }}"
+  tmp="$(mktemp -d "$fontdir/.$name.XXXXXX")"
+  curl -fsSL --retry 4 --retry-delay 5 -o "$tmp/font.tar.xz" \
+    "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ .fonts.nerd_fonts }}/$name.tar.xz"
+  echo "$sha  $tmp/font.tar.xz" | sha256sum -c --quiet - \
+    || { echo "!! $name.tar.xz doesn't match the checksum in packages.yaml; font left as it was" >&2; exit 1; }
+  mkdir "$tmp/font"
+  tar -xJ -C "$tmp/font" -f "$tmp/font.tar.xz"
+  rm -rf "$dest"
+  mv "$tmp/font" "$dest"
+  # The download folder goes before fc-cache scans $fontdir, which it's in.
+  rm -rf "$tmp"
+}
+
+{{ range $name, $sha := .fonts.nerd_fonts_sha256 -}}
+install_font {{ $name }} {{ $sha }}
+{{ end }}
 # fontconfig refuses to write a folder's cache if the folder changes while
-# it's being scanned (another app noticing the new font, say). The font is
+# it's being scanned (another app noticing the new font, say). The fonts are
 # installed either way and apps rebuild the cache themselves, so a second
 # failure is only a warning: it must not stop the rest of `chezmoi apply`.
 if ! fc-cache -f "$fontdir"; then
   sleep 2
   fc-cache -f "$fontdir" \
-    || echo "!! fc-cache couldn't update the font cache; the font is installed, run 'fc-cache -f' if apps don't see it" >&2
+    || echo "!! fc-cache couldn't update the font cache; the fonts are installed, run 'fc-cache -f' if apps don't see them" >&2
 fi

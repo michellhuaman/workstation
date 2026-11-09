@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bump the pinned Nerd Font in home/ to the latest stable release, on a new
+# Bump the pinned Nerd Fonts in home/ to the latest stable release, on a new
 # branch, so it can be tested in the VM before merging, and check
 # Bitwarden's polkit action (system/) against upstream: a difference is
 # shown for review, never copied in. (The CLI tools in mise's config aren't
@@ -135,18 +135,20 @@ polkit_action() {
 }
 
 nerd_font() {
-  local f="$wt/home/.chezmoidata/packages.yaml" cur new sha
+  local f="$wt/home/.chezmoidata/packages.yaml" cur new sums name sha
   cur="$(sed -n 's/^ *nerd_fonts: *\(v[^ #]*\).*/\1/p' "$f")"
   new="$(latest_release ryanoasis/nerd-fonts)"
-  if [[ "$cur" == "$new" ]]; then note "Nerd Font: $cur is the latest"; return 0; fi
-  # The release's own checksum for the file the font script downloads,
-  # pinned with the version, so the download is checked against it.
-  sha="$(fetch "https://github.com/ryanoasis/nerd-fonts/releases/download/$new/SHA-256.txt" \
-         | awk '$2 == "JetBrainsMono.tar.xz" { print $1 }')"
-  [[ "$sha" =~ ^[0-9a-f]{64}$ ]] || { echo "no checksum for JetBrainsMono.tar.xz in $new's SHA-256.txt" >&2; return 1; }
+  if [[ "$cur" == "$new" ]]; then note "Nerd Fonts: $cur is the latest"; return 0; fi
+  # The release's own checksums for the files the font script downloads,
+  # pinned with the version, so the downloads are checked against them.
+  sums="$(fetch "https://github.com/ryanoasis/nerd-fonts/releases/download/$new/SHA-256.txt")"
+  for name in $(sed -n 's/^ *\([A-Za-z0-9_-]*\): *[0-9a-f]\{64\}.*/\1/p' "$f"); do
+    sha="$(awk -v file="$name.tar.xz" '$2 == file { print $1 }' <<<"$sums")"
+    [[ "$sha" =~ ^[0-9a-f]{64}$ ]] || { echo "no checksum for $name.tar.xz in $new's SHA-256.txt" >&2; return 1; }
+    set_value "$f" "^\\s*$name: (?P<v>[0-9a-f]{64})" "$sha"
+  done
   set_value "$f" '^\s*nerd_fonts: (?P<v>v[^\s#]+)' "$new"
-  set_value "$f" '^\s*nerd_fonts_sha256: (?P<v>[0-9a-f]+)' "$sha"
-  commit "$wt" "Bump the Nerd Font from $cur to $new"
+  commit "$wt" "Bump the Nerd Fonts from $cur to $new"
 }
 
 failed=()

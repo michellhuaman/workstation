@@ -21,11 +21,14 @@ packages:
     - com.bilingify.readest                   # EPUB reader
 
 fonts:
-  # Bump a version to make the font script download it again, together with
-  # its checksum: the release's SHA-256.txt line for JetBrainsMono.tar.xz
-  # (update-pins.sh fills both in). The download is checked against it.
-  nerd_fonts: v3.5.1              # JetBrainsMono Nerd Font
-  nerd_fonts_sha256: 04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf
+  # Bump the version to make the font script download them again, together
+  # with the checksums: each font's line in the release's SHA-256.txt
+  # (update-pins.sh fills them all in). The downloads are checked against them.
+  # To add a font, add its archive's name (<name>.tar.xz) and checksum.
+  nerd_fonts: v3.5.1
+  nerd_fonts_sha256:
+    JetBrainsMono: 04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf
+    Mononoki: 84cf96bf81645f97eb11a410e6febad864784a0a254bba4a348d6ff9665a0114
 
 services:
   # User units from dot_config/systemd/user, enabled and started after files

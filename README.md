@@ -42,7 +42,7 @@ README.md                       this file
 .chezmoiroot                    tells chezmoi its source is home/, so it never reads the rest
 autoinstall.yaml                answers for the Ubuntu installer ("Automated installation")
 setup.sh                        the one script to run, after the first login (sudo)
-update-pins.sh                  bumps the pinned Nerd Font, on a branch
+update-pins.sh                  bumps the pinned Nerd Fonts, on a branch
 lists/apt.txt                   apt packages setup.sh makes sure are installed
 lists/apt-sources/              vendor repos (Brave, VS Code, mise, Claude Desktop), copied to /etc/apt/sources.list.d/
 lists/apt-keys.txt              their signing keys, checked by fingerprint, saved to /etc/apt/keyrings/
@@ -51,11 +51,11 @@ system/com.bitwarden.Bitwarden.policy  Bitwarden's polkit action (installed to /
 home/                           the dotfiles: chezmoi's source
   .chezmoiremove          files earlier versions put in ~, deleted on apply
   .chezmoidata/
-    packages.yaml         flatpaks, Nerd Font version and checksum, systemd user units
+    packages.yaml         flatpaks, Nerd Font version and checksums, systemd user units
   .chezmoiscripts/        run by `chezmoi apply`, in number order
     run_onchange_after_20-install-flatpaks.sh.tmpl    reruns when the flatpak list changes
     run_onchange_after_25-install-cli-tools.sh.tmpl   mise install + prune; reruns when the mise config changes
-    run_onchange_after_30-install-fonts.sh.tmpl       Nerd Font (checked against its checksum)
+    run_onchange_after_30-install-fonts.sh.tmpl       Nerd Fonts (each checked against its checksum)
     run_onchange_after_40-enable-services.sh.tmpl     enables the user units in packages.yaml
     run_once_after_50-default-theme.sh.tmpl           dark theme on the first apply only
     run_onchange_after_55-theme-links.sh.tmpl         points Alacritty's theme link at the current flavor
@@ -303,7 +303,8 @@ then step 2.
 | a Flatpak app | `packages.flatpak` in `.chezmoidata/packages.yaml` (the whole set: per-user apps not listed are uninstalled, their data kept) | `chezmoi apply` installs or uninstalls it |
 | a keyboard shortcut | `.chezmoiscripts/run_onchange_after_60-gnome-settings.sh.tmpl` | `chezmoi apply` |
 | a CLI tool | `edot ~/.config/mise/config.toml` (as `"latest"`) | applied on save: installed, and anything no longer listed is pruned |
-| a new Nerd Font release | `fonts.nerd_fonts` in `.chezmoidata/packages.yaml`, and `fonts.nerd_fonts_sha256` next to it (that release's `SHA-256.txt` line for `JetBrainsMono.tar.xz`) | `chezmoi apply` downloads it and checks it |
+| a new Nerd Font release | `fonts.nerd_fonts` in `.chezmoidata/packages.yaml`, and every checksum under `fonts.nerd_fonts_sha256` next to it (each font's `<name>.tar.xz` line in that release's `SHA-256.txt`) | `chezmoi apply` downloads them and checks them |
+| another Nerd Font | its archive's name and checksum under `fonts.nerd_fonts_sha256` (the `SHA-256.txt` of the release in `fonts.nerd_fonts`) | `chezmoi apply` downloads it and checks it |
 | a systemd user unit | the unit in `dot_config/systemd/user/`, its name in `services.user` | `chezmoi apply` enables it |
 | a script, template or anything else in the repo | `chezmoi cd`, then edit the file (e.g. `vim home/.chezmoidata/packages.yaml`) | `chezmoi apply`, `exit` |
 | a system (apt) package | `lists/apt.txt` at the repo root (see "The system half") | re-run `setup.sh` |
@@ -430,12 +431,12 @@ and Git's editor (`dot_gitconfig`). It has no config here.
 
 ## Updating the pinned versions
 
-The Nerd Font the dotfiles download is pinned to an exact version and
-checksum. `update-pins.sh` moves it to the latest stable release:
+The Nerd Fonts the dotfiles download are pinned to an exact version and
+checksums. `update-pins.sh` moves them to the latest stable release:
 
 | Repo | Pin | Latest from |
 | --- | --- | --- |
-| `home/` | Nerd Font, `fonts.nerd_fonts` and its checksum `fonts.nerd_fonts_sha256` in `home/.chezmoidata/packages.yaml` | ryanoasis/nerd-fonts' latest release (the checksum from its `SHA-256.txt`) |
+| `home/` | Nerd Fonts, `fonts.nerd_fonts` and their checksums `fonts.nerd_fonts_sha256` in `home/.chezmoidata/packages.yaml` | ryanoasis/nerd-fonts' latest release (the checksums from its `SHA-256.txt`) |
 | root | Bitwarden's polkit action, `system/` | only compared with upstream; a difference is shown, never copied in |
 
 "Latest" never means a pre-release or beta. The CLI tools aren't pinned
