@@ -7,11 +7,12 @@
   asking Bitwarden for the secret on every apply.
 
   The client ID and secret come from the Bitwarden item "rclone-drive" (custom
-  fields client_id and client_secret), so bw must be unlocked for the first
-  apply: export BW_SESSION="$(bw unlock --raw)". There's no token here: sign
-  in once with `rclone config reconnect gdrive:`.
+  fields client_id and client_secret). On a new machine's first apply bw isn't
+  installed or unlocked yet, so the file is skipped; it's written by a later
+  apply, after export BW_SESSION="$(bw unlock --raw)". There's no token here:
+  sign in once with `rclone config reconnect gdrive:`.
 */ -}}
-{{- if not (stat (joinPath .chezmoi.homeDir ".config/rclone/rclone.conf")) -}}
+{{- if and (not (stat (joinPath .chezmoi.homeDir ".config/rclone/rclone.conf"))) (env "BW_SESSION") (lookPath "bw") -}}
 {{- $item := bitwardenFields "item" "rclone-drive" -}}
 [gdrive]
 type = drive
