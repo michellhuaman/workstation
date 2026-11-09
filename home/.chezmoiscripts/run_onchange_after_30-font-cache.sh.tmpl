@@ -1,0 +1,7 @@
+#!/bin/sh
+# Rebuilds the font cache when the fonts chezmoi downloads change
+# (.chezmoiexternal.toml.tmpl; hash: {{ .fonts | toJson | sha256sum }}).
+# Only a warning if it fails: the fonts are installed and apps rebuild the
+# cache themselves, so it mustn't stop the rest of `chezmoi apply`.
+fc-cache -f "$HOME/.local/share/fonts" \
+  || echo "!! fc-cache failed; run 'fc-cache -f' if apps don't see the fonts" >&2

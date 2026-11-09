@@ -1,8 +1,4 @@
 # Files earlier versions of this repo put in ~, deleted on the next apply.
-.config/autostart/com.anthropic.Claude.desktop
-.config/systemd/user/rclone-smr.service
-.config/alacritty/themes/catppuccin-frappe.toml
-.config/alacritty/themes/catppuccin-macchiato.toml
-.config/bat/config-latte
-.config/bat/config-mocha
-.config/bat/themes
+.config/systemd/user/flatpak-user-manager.service
+.config/systemd/user/flatpak-user-manager.timer
+.config/systemd/user/timers.target.wants/flatpak-user-manager.timer

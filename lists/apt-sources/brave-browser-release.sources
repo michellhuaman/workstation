@@ -1,5 +1,10 @@
 # Brave (stable), the repo from https://brave.com/linux/ (same file name, so
-# Brave's own instructions find it), signed by the key in lists/apt-keys.txt.
+# Brave's own instructions find it). Key: lists/apt-keys/brave-browser.gpg,
+# from https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+# Its three keys, as on https://brave.com/signing-keys/:
+# DBF1A116C220B8C7164F98230686B78420038257
+# 47D32A74E9A9E013A4B4926C68D513D36A73CD96
+# B2A3DCA350E67256740DF904DE4EC67BE4B0DCA0
 Types: deb
 URIs: https://brave-browser-apt-release.s3.brave.com
 Suites: stable

@@ -1,5 +1,7 @@
 # Visual Studio Code, from Microsoft's repo (same file name as the one the
-# code package would add itself), signed by the key in lists/apt-keys.txt.
+# code package would add itself). Key: lists/apt-keys/microsoft.gpg, from
+# https://packages.microsoft.com/keys/microsoft.asc
+# Fingerprint: BC528686B50D79E339D3721CEB3E94ADBE1229CF
 Types: deb
 URIs: https://packages.microsoft.com/repos/code
 Suites: stable

@@ -1,5 +1,7 @@
-# mise (the CLI tool manager the dotfiles use), from its own repo, signed by
-# the key in lists/apt-keys.txt.
+# mise (the CLI tool manager the dotfiles use), from its own repo.
+# Key: lists/apt-keys/mise.gpg, from https://mise.jdx.dev/gpg-key.pub, the one
+# that also signs its GitHub releases (SHASUMS256.asc).
+# Fingerprint: 24853EC9F655CE80B48E6C3A8B81C9D17413A06D
 Types: deb
 URIs: https://mise.jdx.dev/deb
 Suites: stable

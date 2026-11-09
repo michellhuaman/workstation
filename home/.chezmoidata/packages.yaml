@@ -21,9 +21,9 @@ packages:
     - com.bilingify.readest                   # EPUB reader
 
 fonts:
-  # Bump the version to make the font script download them again, together
-  # with the checksums: each font's line in the release's SHA-256.txt
-  # (update-pins.sh fills them all in). The downloads are checked against them.
+  # Downloaded by chezmoi (.chezmoiexternal.toml.tmpl) and checked against
+  # these. Bump the version together with the checksums: each font's line in
+  # the release's SHA-256.txt (update-pins.sh fills them all in).
   # To add a font, add its archive's name (<name>.tar.xz) and checksum.
   nerd_fonts: v3.5.1
   nerd_fonts_sha256:
@@ -34,6 +34,5 @@ services:
   # User units from dot_config/systemd/user, enabled and started after files
   # are applied.
   user:
-    - flatpak-user-manager.timer  # daily flatpak update, on AC power only
     - random-wallpaper.timer      # daily random wallpaper from ~/Pictures/wallpapers
     - rclone-drive.service        # mounts Google Drive at ~/.gdrive; skipped until rclone is signed in

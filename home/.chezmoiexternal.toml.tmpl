@@ -1,0 +1,9 @@
+# The Nerd Fonts in .chezmoidata/packages.yaml, each checked against its pinned
+# checksum. chezmoi downloads them when the version (so the URL) changes.
+{{ range $name, $sha := .fonts.nerd_fonts_sha256 }}
+[".local/share/fonts/{{ $name }}NerdFont"]
+  type = "archive"
+  url = "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ $.fonts.nerd_fonts }}/{{ $name }}.tar.xz"
+  checksum.sha256 = "{{ $sha }}"
+  exact = true
+{{ end -}}
