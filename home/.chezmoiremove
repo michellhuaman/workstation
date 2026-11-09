@@ -1,4 +1,0 @@
-# Files earlier versions of this repo put in ~, deleted on the next apply.
-.config/systemd/user/flatpak-user-manager.service
-.config/systemd/user/flatpak-user-manager.timer
-.config/systemd/user/timers.target.wants/flatpak-user-manager.timer

@@ -31,7 +31,6 @@ system/              Bitwarden's polkit action, installed by setup.sh
 home/                the dotfiles: chezmoi's source
   .chezmoidata/      flatpaks, Nerd Font version and checksums, systemd user units
   .chezmoiexternal.toml.tmpl   the Nerd Font downloads
-  .chezmoiremove     files earlier versions put in ~, deleted on apply
   .chezmoiscripts/   run by `chezmoi apply`, in number order
   dot_local/bin/     theme-toggle.sh, ddc-brightness.sh, powermenu.sh, vm,
                      random-wallpaper.sh, wallpaper-reject.sh
@@ -143,7 +142,7 @@ To track a new file: `chezmoi add ~/.config/newapp/config`.
 | another Nerd Font | its archive's name and checksum under `fonts.nerd_fonts_sha256` (the `SHA-256.txt` of the release in `fonts.nerd_fonts`) | `chezmoi apply` |
 | a systemd user unit | the unit in `dot_config/systemd/user/`, its name in `services.user` | `chezmoi apply` |
 | anything else in `home/` | `chezmoi cd`, then edit the file | `chezmoi apply`, `exit` |
-| a system (apt) package | `lists/apt.txt` | re-run `setup.sh` on each machine |
+| a system (apt) package | `lists/apt.txt` | re-run `setup.sh` |
 | a vendor apt repo | its `.sources` file in `lists/apt-sources/` and its binary key in `lists/apt-keys/` (check it first: `gpg --show-keys`) | re-run `setup.sh` |
 
 `chezmoi update` doesn't run `setup.sh`. Nothing removes system changes for
