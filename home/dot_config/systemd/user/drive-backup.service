@@ -1,0 +1,22 @@
+# Mirrors ~/drive to the folder "backup" in Google Drive (the remote gdrive: in
+# ~/.config/rclone/rclone.conf). ~/drive is the source of truth: anything
+# changed in that Drive folder directly is overwritten by the next run.
+#
+# Skipped (not failed) until rclone is signed in, and while ~/drive is empty so
+# a rebuilt machine can't mirror nothing over the backup.
+#
+# The dry run stops the backup before it deletes anything if more than 25 files
+# would go (a real --max-delete run would delete 25 first). After a deliberate
+# big cleanup, run the ExecStart command by hand without --max-delete.
+#
+# Deleted files go to Drive's trash. --drive-skip-gdocs leaves native Google
+# Docs/Sheets/Slides alone.
+[Unit]
+Description=Back up ~/drive to Google Drive
+ConditionDirectoryNotEmpty=%h/drive
+
+[Service]
+Type=oneshot
+ExecCondition=/usr/bin/grep -q "^token = " "%h/.config/rclone/rclone.conf"
+ExecStartPre=/usr/bin/rclone sync "%h/drive" gdrive:backup --drive-skip-gdocs --max-delete 25 --dry-run
+ExecStart=/usr/bin/rclone sync "%h/drive" gdrive:backup --drive-skip-gdocs --max-delete 25

@@ -1,0 +1,11 @@
+[Unit]
+Description=Back up ~/drive to Google Drive hourly
+
+[Timer]
+OnCalendar=hourly
+# Catch up on a missed backup if the computer was off
+Persistent=true
+RandomizedDelaySec=5min
+
+[Install]
+WantedBy=timers.target

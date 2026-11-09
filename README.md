@@ -78,7 +78,7 @@ real ones: `dot_` becomes `.`, `private_` means only you can read it,
    Then run `chezmoi apply` once more to clone the private wallpapers repo,
    which the first apply skipped because it needs SSH access.
 
-5. **Google Drive** (mounted by `rclone-drive.service`): the
+5. **Google Drive** (backs up `~/drive`, by `drive-backup.timer`): the
    first apply wrote `~/.config/rclone/rclone.conf` only if Bitwarden's CLI
    was unlocked. If it wasn't, unlock it and apply again:
 
@@ -89,12 +89,15 @@ real ones: `dot_` becomes `.`, `private_` means only you can read it,
    ```
 
    Then sign rclone in (a browser opens; answer `y`, then `n` to "Shared
-   Drive") and start the mount:
+   Drive") and restore your files:
 
    ```bash
    rclone config reconnect gdrive:
-   systemctl --user start rclone-drive.service
+   rclone copy gdrive:backup ~/drive --drive-skip-gdocs
    ```
+
+   Backups are skipped while `~/drive` is empty. If the copy is interrupted,
+   run it again right away: the next backup treats what's missing as deleted.
 
 ## VirtualBox (optional)
 
@@ -188,12 +191,16 @@ it's exactly what the desktop portal writes. The Flatpak override in
 To run in the tray, turn on "Keep Bitwarden running in the background" in its
 settings (stored with the vault data, so not tracked here).
 
-**Google Drive.** `~/drive` links to the mount at `~/.gdrive`, which is hidden
-because Nautilus probes every file of mounts it can see. Google Docs, Sheets
-and Slides show up as Office exports: open them, but edit them in the browser,
-since saving uploads a separate file. "Shared with me" isn't there; add a
-shortcut in My Drive. The client ID and secret are custom fields `client_id`
-and `client_secret` of the Bitwarden item `rclone-drive`. They belong to the
+**Google Drive.** `~/drive` is an ordinary local folder and the source of
+truth. `drive-backup.timer` mirrors it hourly to the `backup` folder in Drive,
+so edits made directly in that folder are overwritten by the next run. Deleted
+files go to Drive's trash. If a run would delete more than 25 files, the backup
+stops before deleting anything and the service shows as failed; after a
+deliberate big cleanup, run `rclone sync ~/drive gdrive:backup
+--drive-skip-gdocs` once. Native Google Docs, Sheets and Slides aren't backed
+up: they stay in Drive, outside `backup`. The client ID and secret are custom
+fields `client_id` and `client_secret` of the Bitwarden item `rclone-drive`.
+They belong to the
 Google Cloud project `rclone-smr`, a Desktop app OAuth client, published so
 the sign-in doesn't expire after 7 days.
 
