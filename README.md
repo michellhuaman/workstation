@@ -24,6 +24,7 @@ The setup before Ubuntu, Fedora Sway Atomic, is kept as the tag
 ```
 autoinstall.yaml     answers for the Ubuntu installer ("Automated installation")
 setup.sh             the one script to run, after the first login (sudo)
+setup-virtualbox.sh  optional: installs VirtualBox (sudo)
 update-pins.sh       bumps the pinned Nerd Fonts
 lists/               apt packages, vendor repos and keys, user groups
 system/              Bitwarden's polkit action, installed by setup.sh
@@ -64,27 +65,9 @@ real ones: `dot_` becomes `.`, `private_` means only you can read it,
    It only asks for your **sudo password**, once. The downloaded
    `workstation-main` folder can be deleted afterwards.
 
-3. **If Secure Boot is on, enroll the key VirtualBox's modules are signed
-   with**, so VirtualBox VMs can start. Check first:
-
-   ```bash
-   mokutil --sb-state
-   mokutil --test-key /var/lib/shim-signed/mok/MOK.der
-   ```
-
-   If it says "SecureBoot enabled" and the key "is not enrolled", import it:
-
-   ```bash
-   sudo mokutil --import /var/lib/shim-signed/mok/MOK.der
-   ```
-
-   It asks for a one-time password you make up. At the next boot (step 4) a
-   blue MOK Manager screen appears: pick **Enroll MOK**, then **Continue**,
-   **Yes**, type that password and **Reboot**. If the screen goes by, run
-   the import again and reboot.
-4. **Reboot** (`systemctl reboot`) and log in. Flatpak apps are in the app
+3. **Reboot** (`systemctl reboot`) and log in. Flatpak apps are in the app
    grid, and `Super+Return` opens Alacritty.
-5. **In Bitwarden**, log in (it starts at login), then:
+4. **In Bitwarden**, log in (it starts at login), then:
    - File > Settings > App settings (all accounts) > turn on **Enable SSH
      agent**, so `git push` works. Check with `ssh -T git@github.com`
      (approve the request in Bitwarden).
@@ -96,7 +79,7 @@ real ones: `dot_` becomes `.`, `private_` means only you can read it,
    Then run `chezmoi apply` once more to clone the private wallpapers repo,
    which the first apply skipped because it needs SSH access.
 
-6. **Google Drive** (mounted by `rclone-drive.service`): the
+5. **Google Drive** (mounted by `rclone-drive.service`): the
    first apply wrote `~/.config/rclone/rclone.conf` only if Bitwarden's CLI
    was unlocked. If it wasn't, unlock it and apply again:
 
@@ -113,6 +96,28 @@ real ones: `dot_` becomes `.`, `private_` means only you can read it,
    rclone config reconnect gdrive:
    systemctl --user start rclone-drive.service
    ```
+
+## VirtualBox (optional)
+
+`setup.sh` leaves VirtualBox out. On a machine that needs it (`vm` does), run:
+
+```bash
+bash ~/.local/share/chezmoi/setup-virtualbox.sh
+```
+
+With Secure Boot on, the install asks for a one-time password you make up.
+Reboot, and on the blue MOK Manager screen pick **Enroll MOK** (not "Continue
+boot"), then **Continue**, **Yes**, type that password and **Reboot**.
+
+To check it, or if the screen went by:
+
+```bash
+mokutil --test-key /var/lib/shim-signed/mok/MOK.der
+sudo mokutil --import /var/lib/shim-signed/mok/MOK.der   # if it's "not enrolled", then reboot
+```
+
+Once VirtualBox is installed, it and KVM (virt-manager, Claude Desktop's
+Cowork) can't run VMs at the same time: only one can hold AMD-V/VT-x.
 
 ## Daily workflow
 
@@ -192,9 +197,6 @@ shortcut in My Drive. The client ID and secret are custom fields `client_id`
 and `client_secret` of the Bitwarden item `rclone-drive`. They belong to the
 Google Cloud project `rclone-smr`, a Desktop app OAuth client, published so
 the sign-in doesn't expire after 7 days.
-
-**VMs.** VirtualBox and KVM (virt-manager, Claude Desktop's Cowork) can't run
-VMs at the same time: only one can hold AMD-V/VT-x.
 
 ## Updating the pinned versions
 

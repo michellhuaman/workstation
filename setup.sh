@@ -85,7 +85,6 @@ info "Setting up ${PRETTY_NAME:-$ID} for $(id -un)"
 
 ubuntu_system() {
   local g me want=()
-  export DEBIAN_FRONTEND=noninteractive
   mapfile -t want < <(read_list "$lists/apt.txt")
 
   # Vendor repos: the signing keys and .sources files go where apt reads them.
