@@ -94,6 +94,10 @@ ubuntu_system() {
   # VS Code's package offers to add Microsoft's repo itself; it's already
   # here (vscode.sources), so tell it not to.
   echo "code code/add-microsoft-repo boolean false" | sudo debconf-set-selections
+  # ttf-mscorefonts-installer stops at a license dialog otherwise; this accepts
+  # Microsoft's EULA on your behalf.
+  echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula boolean true" \
+    | sudo debconf-set-selections
 
   echo "Updating the package lists"
   sudo apt-get update -q

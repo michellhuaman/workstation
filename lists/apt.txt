@@ -24,6 +24,7 @@ rclone                    # backs up ~/drive to Google Drive (the dotfiles' driv
 gnome-tweaks              # GNOME settings that Settings doesn't show (no Flatpak exists)
 distrobox                 # containers, for anything that doesn't belong on the host
 podman                    # distrobox's container engine
+ttf-mscorefonts-installer # Microsoft's core fonts (Arial, Times New Roman...), from multiverse; setup.sh accepts the EULA
 
 # Virtual machines: QEMU/KVM through libvirt, run from virt-manager. setup.sh
 # adds you to the libvirt group (groups.txt).
