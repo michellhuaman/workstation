@@ -1,54 +1,36 @@
 #!/usr/bin/env bash
-# Set a random GNOME wallpaper for each mode: one from ~/Pictures/wallpapers/light
-# for light mode (picture-uri) and one from ~/Pictures/wallpapers/dark for dark
-# mode (picture-uri-dark). GNOME shows the one for its color scheme, which the
-# dotfiles keep dark.
+# Sets a random GNOME wallpaper from ~/Pictures/wallpapers (and its
+# subfolders). GNOME keeps one wallpaper per color scheme (picture-uri for
+# light, picture-uri-dark for dark); both get the same image, so it shows
+# whichever scheme is on. Never picks the one already set, when there's
+# another choice.
 #
-# If light/ or dark/ has no images, that mode picks from the whole folder.
-# Never picks the wallpaper a mode already has (when there's another choice).
-#
-#   random-wallpaper.sh         new light and dark wallpapers
-#   random-wallpaper.sh light   only a new light one (dark: only a new dark one)
+#   random-wallpaper.sh
 set -euo pipefail
 
 DIR="${WALLPAPER_DIR:-$HOME/Pictures/wallpapers}"
 SCHEMA=org.gnome.desktop.background
 
-# Fills the array named $1 with the images under folder $2.
-list_images() {
-  local -n out="$1"
-  out=()
-  [[ -d "$2" ]] || return 0
-  mapfile -d '' out < <(find "$2" -type f \
+images=()
+if [[ -d "$DIR" ]]; then
+  mapfile -d '' images < <(find "$DIR" -path "$DIR/.git" -prune -o -type f \
     \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) -print0)
-}
+fi
+if (( ${#images[@]} == 0 )); then
+  echo "No images found in $DIR" >&2
+  exit 1
+fi
 
-# Sets gsettings key $1 to a random image from folder $2 (or all of $DIR).
-set_random() {
-  local key="$1" images current choice
-  list_images images "$2"
-  (( ${#images[@]} )) || list_images images "$DIR"
-  if (( ${#images[@]} == 0 )); then
-    echo "No images found in $DIR" >&2
-    exit 1
-  fi
+# The dark one is what's on screen (the dotfiles keep GNOME dark).
+current=$(gsettings get "$SCHEMA" picture-uri-dark | tr -d "'")
+choice="${images[RANDOM % ${#images[@]}]}"
+if (( ${#images[@]} > 1 )); then
+  while [[ "file://$choice" == "$current" ]]; do
+    choice="${images[RANDOM % ${#images[@]}]}"
+  done
+fi
 
-  current=$(gsettings get "$SCHEMA" "$key" | tr -d "'")
-  choice="${images[RANDOM % ${#images[@]}]}"
-  if (( ${#images[@]} > 1 )); then
-    while [[ "file://$choice" == "$current" ]]; do
-      choice="${images[RANDOM % ${#images[@]}]}"
-    done
-  fi
-
-  gsettings set "$SCHEMA" "$key" "file://$choice"
-  echo "$key set to $choice"
-}
-
-case "${1:-both}" in
-  light|both|dark) ;;
-  *) echo "usage: ${0##*/} [light|dark]" >&2; exit 2 ;;
-esac
-[[ "${1:-both}" == dark ]]  || set_random picture-uri      "$DIR/light"
-[[ "${1:-both}" == light ]] || set_random picture-uri-dark "$DIR/dark"
+gsettings set "$SCHEMA" picture-uri      "file://$choice"
+gsettings set "$SCHEMA" picture-uri-dark "file://$choice"
 gsettings set "$SCHEMA" picture-options 'zoom'
+echo "Wallpaper set to $choice"

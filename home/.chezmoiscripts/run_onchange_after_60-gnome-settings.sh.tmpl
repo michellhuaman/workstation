@@ -10,7 +10,7 @@
 #   theme        dark (Yaru-dark), to match Alacritty's Catppuccin Frappé
 #   shortcuts    Super+Return Alacritty, Super+Shift+Return Brave,
 #                Super+Shift+B ddc-brightness.sh,
-#                Super+Shift+E powermenu.sh, Super+Shift+W wallpaper-reject.sh (trash/sort),
+#                Super+Shift+E powermenu.sh, Super+Shift+W wallpaper-reject.sh (trash),
 #                Super+E Files (new window), Super+I Settings,
 #                Super+Shift+S screenshot (interactive, like Print),
 #                Super+F maximize (toggles), Super+W close window,
@@ -81,8 +81,7 @@ gsettings set "$color" night-light-temperature 4000
 gsettings set "$color" night-light-last-coordinates '(40.4, -3.7)'
 
 # --- theme -------------------------------------------------------------
-# Always dark: Ubuntu's Yaru-dark for apps and icons. The wallpaper shown is
-# picture-uri-dark (random-wallpaper.sh).
+# Always dark: Ubuntu's Yaru-dark for apps and icons.
 interface=org.gnome.desktop.interface
 gsettings set "$interface" color-scheme prefer-dark
 gsettings set "$interface" gtk-theme Yaru-dark
@@ -103,7 +102,7 @@ shortcut terminal     "Terminal (Alacritty)" '<Super>Return'       'alacritty'
 shortcut browser      "Brave"                '<Super><Shift>Return' 'brave-browser'
 shortcut brightness   "Monitor brightness"   '<Super><Shift>b'     '{{ .chezmoi.homeDir }}/.local/bin/ddc-brightness.sh'
 shortcut powermenu    "Power menu"           '<Super><Shift>e'     '{{ .chezmoi.homeDir }}/.local/bin/powermenu.sh'
-shortcut wallpaper-reject "Trash or sort the wallpaper" '<Super><Shift>w' '{{ .chezmoi.homeDir }}/.local/bin/wallpaper-reject.sh'
+shortcut wallpaper-reject "Trash the wallpaper" '<Super><Shift>w' '{{ .chezmoi.homeDir }}/.local/bin/wallpaper-reject.sh'
 shortcut files        "Files (new window)"   '<Super>e'            'nautilus --new-window'
 
 # Settings and the screenshot UI are GNOME's own actions, so the keys go

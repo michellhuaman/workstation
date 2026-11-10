@@ -180,9 +180,9 @@ and tmux use the terminal's colors), Yaru-dark for GNOME and its apps. There's
 no light mode to switch to.
 
 **Wallpapers.** The images are in a private repo cloned to
-`~/Pictures/wallpapers`, so they aren't here. `random-wallpaper.sh` picks new
-ones daily from `light/` and `dark/`; `Super+Shift+W` trashes or sorts the one
-on screen. Sorting only changes the working copy, so commit and push it
+`~/Pictures/wallpapers`, so they aren't here. `random-wallpaper.sh` picks a
+new one daily; `Super+Shift+W` moves the one on screen to the Trash and shows
+another. Trashing only changes the working copy, so commit and push it
 yourself: `git -C ~/Pictures/wallpapers add -A`, then `commit` and `push`.
 
 **Bitwarden.** It holds the SSH keys and is the SSH agent, so it must be
