@@ -9,7 +9,7 @@
 #   2. chezmoi:   the latest release, run through mise; and GitHub's SSH
 #                 host keys
 #   3. Dotfiles:  chezmoi clones this repo (public, over HTTPS) into
-#                 ~/.local/share/chezmoi and applies home/, with pushes
+#                 ~/repos/workstation and applies home/, with pushes
 #                 going over SSH (Bitwarden's agent); its scripts install
 #                 the flatpaks, CLI tools, GNOME settings and user services
 #                 (no sudo). That clone is where you change and push this
@@ -35,7 +35,7 @@ repo_url="https://github.com/michellhuaman/workstation.git"   # pulls: public, n
 push_url="git@github.com:michellhuaman/workstation.git"       # pushes: Bitwarden's agent
 branch=""
 # chezmoi's clone of this repo (its working tree; the dotfiles are in home/).
-clone_dir="${XDG_DATA_HOME:-$HOME/.local/share}/chezmoi"
+clone_dir="$HOME/repos/workstation"   # also sourceDir in home/.chezmoi.toml.tmpl
 do_system=true
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -170,7 +170,7 @@ info "Step 2/3: chezmoi"
 # chezmoi is one of the dotfiles' CLI tools (mise). Until their own `mise
 # install` has run, mise downloads it here, checking the release's checksums
 # and their cosign signature.
-chezmoi() { (cd "$HOME" && mise exec chezmoi@latest -- chezmoi "$@"); }
+chezmoi() { (cd "$HOME" && mise exec chezmoi@latest -- chezmoi --source "$clone_dir" "$@"); }
 chezmoi --version
 
 # Trust GitHub's published host keys (fetched over HTTPS) instead of

@@ -1,0 +1,4 @@
+# chezmoi's own config, written to ~/.config/chezmoi/chezmoi.toml by
+# `chezmoi init`. The clone of this repo lives in ~/repos/workstation instead
+# of chezmoi's default ~/.local/share/chezmoi.
+sourceDir = {{ joinPath .chezmoi.homeDir "repos/workstation" | quote }}

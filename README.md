@@ -13,7 +13,7 @@ so `chezmoi apply` never asks for a password. Anything that needs root goes in
 
 Nothing secret lives here, so the repo is public: a new machine downloads it
 and chezmoi clones it over HTTPS, with no key. Pushes go over SSH, through
-Bitwarden's agent. The clone is `~/.local/share/chezmoi` (`chezmoi cd` goes
+Bitwarden's agent. The clone is `~/repos/workstation` (`chezmoi cd` goes
 there).
 
 The setup before Ubuntu, Fedora Sway Atomic, is kept as the tag
@@ -104,7 +104,7 @@ real ones: `dot_` becomes `.`, `private_` means only you can read it,
 `setup.sh` leaves VirtualBox out. On a machine that needs it (`vm` does), run:
 
 ```bash
-bash ~/.local/share/chezmoi/setup-virtualbox.sh
+bash ~/repos/workstation/setup-virtualbox.sh
 ```
 
 With Secure Boot on, the install asks for a one-time password you make up.
@@ -159,7 +159,7 @@ the mise tools.
 ## If something goes wrong
 
 - **A package name is wrong, or a step fails**: fix it in the repo, push,
-  and run `bash ~/.local/share/chezmoi/setup.sh` again. If only the dotfiles
+  and run `bash ~/repos/workstation/setup.sh` again. If only the dotfiles
   part failed, add `--no-system`.
 - **"Could not get lock /var/lib/dpkg/lock-frontend"**: the automatic
   updater (or the App Center) is busy; wait a minute and run `setup.sh`
@@ -211,7 +211,7 @@ aren't pinned (`update` upgrades them), and the Catppuccin theme files are
 plain copies.
 
 ```bash
-bash ~/.local/share/chezmoi/update-pins.sh
+bash ~/repos/workstation/update-pins.sh
 chezmoi git -- diff
 chezmoi apply
 ```
