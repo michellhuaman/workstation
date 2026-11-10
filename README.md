@@ -78,7 +78,7 @@ real ones: `dot_` becomes `.`, `private_` means only you can read it,
    Then run `chezmoi apply` once more to clone the private wallpapers repo,
    which the first apply skipped because it needs SSH access.
 
-5. **Google Drive** (backs up `~/drive`, by `drive-backup.timer`): the
+5. **Google Drive** (backs up `~/0`, by `drive-backup.timer`): the
    first apply wrote `~/.config/rclone/rclone.conf` only if Bitwarden's CLI
    was unlocked. If it wasn't, unlock it and apply again:
 
@@ -93,10 +93,10 @@ real ones: `dot_` becomes `.`, `private_` means only you can read it,
 
    ```bash
    rclone config reconnect gdrive:
-   rclone copy gdrive:backup ~/drive --drive-skip-gdocs
+   rclone copy gdrive:backup ~/0 --drive-skip-gdocs
    ```
 
-   Backups are skipped while `~/drive` is empty. If the copy is interrupted,
+   Backups are skipped while `~/0` is empty. If the copy is interrupted,
    run it again right away: the next backup treats what's missing as deleted.
 
 ## VirtualBox (optional)
@@ -191,12 +191,12 @@ it's exactly what the desktop portal writes. The Flatpak override in
 To run in the tray, turn on "Keep Bitwarden running in the background" in its
 settings (stored with the vault data, so not tracked here).
 
-**Google Drive.** `~/drive` is an ordinary local folder and the source of
+**Google Drive.** `~/0` is an ordinary local folder and the source of
 truth. `drive-backup.timer` mirrors it hourly to the `backup` folder in Drive,
 so edits made directly in that folder are overwritten by the next run. Deleted
 files go to Drive's trash. If a run would delete more than 25 files, the backup
 stops before deleting anything and the service shows as failed; after a
-deliberate big cleanup, run `rclone sync ~/drive gdrive:backup
+deliberate big cleanup, run `rclone sync ~/0 gdrive:backup
 --drive-skip-gdocs` once. Native Google Docs, Sheets and Slides aren't backed
 up: they stay in Drive, outside `backup`. The client ID and secret are custom
 fields `client_id` and `client_secret` of the Bitwarden item `rclone-drive`.

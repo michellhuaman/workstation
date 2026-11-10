@@ -1,5 +1,5 @@
 [Unit]
-Description=Back up ~/drive to Google Drive hourly
+Description=Back up ~/0 to Google Drive hourly
 
 [Timer]
 OnCalendar=hourly

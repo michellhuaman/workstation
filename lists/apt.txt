@@ -20,7 +20,7 @@ tmux                      # config in the dotfiles (~/.config/tmux/tmux.conf)
 tree			  # recursively lists the contents of a directory in a tree-like visual format
 htop                      # process viewer
 btop                      # resource monitor (keeps its own default config)
-rclone                    # backs up ~/drive to Google Drive (the dotfiles' drive-backup.service)
+rclone                    # backs up ~/0 to Google Drive (the dotfiles' drive-backup.service)
 gnome-tweaks              # GNOME settings that Settings doesn't show (no Flatpak exists)
 distrobox                 # containers, for anything that doesn't belong on the host
 podman                    # distrobox's container engine

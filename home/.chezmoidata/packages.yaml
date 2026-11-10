@@ -35,4 +35,4 @@ services:
   # are applied.
   user:
     - random-wallpaper.timer      # daily random wallpaper from ~/Pictures/wallpapers
-    - drive-backup.timer          # hourly backup of ~/drive to Google Drive; skipped until rclone is signed in
+    - drive-backup.timer          # hourly backup of ~/0 to Google Drive; skipped until rclone is signed in
