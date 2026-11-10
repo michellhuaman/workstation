@@ -7,8 +7,9 @@
 #                swapped (Super+Space switches layouts, GNOME's default)
 #   touchpad     tap to click, traditional (not natural) scrolling
 #   night light  4000 K between sunset and sunrise in Madrid
+#   theme        dark (Yaru-dark), to match Alacritty's Catppuccin Frappé
 #   shortcuts    Super+Return Alacritty, Super+Shift+Return Brave,
-#                Super+Shift+T theme-toggle.sh, Super+Shift+B ddc-brightness.sh,
+#                Super+Shift+B ddc-brightness.sh,
 #                Super+Shift+E powermenu.sh, Super+Shift+W wallpaper-reject.sh (trash/sort),
 #                Super+E Files (new window), Super+I Settings,
 #                Super+Shift+S screenshot (interactive, like Print),
@@ -29,7 +30,7 @@ if ! command -v gsettings >/dev/null; then
   echo "!! gsettings not found, skipping the GNOME settings" >&2
   exit 0
 fi
-echo "==> GNOME settings (keyboard, touchpad, night light, shortcuts)"
+echo "==> GNOME settings (keyboard, touchpad, night light, theme, shortcuts)"
 
 # Adds the string $3 to the string-list setting $1 $2, if it isn't in it yet.
 add_to_list() {
@@ -79,6 +80,14 @@ gsettings set "$color" night-light-schedule-automatic true
 gsettings set "$color" night-light-temperature 4000
 gsettings set "$color" night-light-last-coordinates '(40.4, -3.7)'
 
+# --- theme -------------------------------------------------------------
+# Always dark: Ubuntu's Yaru-dark for apps and icons. The wallpaper shown is
+# picture-uri-dark (random-wallpaper.sh).
+interface=org.gnome.desktop.interface
+gsettings set "$interface" color-scheme prefer-dark
+gsettings set "$interface" gtk-theme Yaru-dark
+gsettings set "$interface" icon-theme Yaru-dark
+
 # --- shortcuts ---------------------------------------------------------
 # GNOME runs the command without a shell, so paths are spelled out.
 media_keys=org.gnome.settings-daemon.plugins.media-keys
@@ -92,7 +101,6 @@ shortcut() { # $1 id, $2 name, $3 keys, $4 command
 }
 shortcut terminal     "Terminal (Alacritty)" '<Super>Return'       'alacritty'
 shortcut browser      "Brave"                '<Super><Shift>Return' 'brave-browser'
-shortcut theme-toggle "Toggle light/dark"    '<Super><Shift>t'     '{{ .chezmoi.homeDir }}/.local/bin/theme-toggle.sh'
 shortcut brightness   "Monitor brightness"   '<Super><Shift>b'     '{{ .chezmoi.homeDir }}/.local/bin/ddc-brightness.sh'
 shortcut powermenu    "Power menu"           '<Super><Shift>e'     '{{ .chezmoi.homeDir }}/.local/bin/powermenu.sh'
 shortcut wallpaper-reject "Trash or sort the wallpaper" '<Super><Shift>w' '{{ .chezmoi.homeDir }}/.local/bin/wallpaper-reject.sh'

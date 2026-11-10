@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Set a random GNOME wallpaper for each mode: one from ~/Pictures/wallpapers/light
 # for light mode (picture-uri) and one from ~/Pictures/wallpapers/dark for dark
-# mode (picture-uri-dark). GNOME shows the matching one when the color scheme
-# changes, so theme-toggle.sh needs to do nothing.
+# mode (picture-uri-dark). GNOME shows the one for its color scheme, which the
+# dotfiles keep dark.
 #
 # If light/ or dark/ has no images, that mode picks from the whole folder.
 # Never picks the wallpaper a mode already has (when there's another choice).

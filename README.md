@@ -32,7 +32,7 @@ home/                the dotfiles: chezmoi's source
   .chezmoidata/      flatpaks, Nerd Font version and checksums, systemd user units
   .chezmoiexternal.toml.tmpl   the Nerd Font downloads
   .chezmoiscripts/   run by `chezmoi apply`, in number order
-  dot_local/bin/     theme-toggle.sh, ddc-brightness.sh, powermenu.sh, vm,
+  dot_local/bin/     ddc-brightness.sh, powermenu.sh, vm,
                      random-wallpaper.sh, wallpaper-reject.sh
 ```
 
@@ -175,8 +175,9 @@ the mise tools.
 
 ## Good to know
 
-**Themes.** `Super+Shift+T` runs `theme-toggle.sh`. A new machine starts dark.
-The wallpaper follows on its own, since GNOME keeps one per mode.
+**Theme.** One, always dark: Catppuccin Frappé in Alacritty and bat (starship
+and tmux use the terminal's colors), Yaru-dark for GNOME and its apps. There's
+no light mode to switch to.
 
 **Wallpapers.** The images are in a private repo cloned to
 `~/Pictures/wallpapers`, so they aren't here. `random-wallpaper.sh` picks new
