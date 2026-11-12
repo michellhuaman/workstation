@@ -175,7 +175,7 @@ the mise tools.
 
 ## Good to know
 
-**Theme.** One, always dark: Catppuccin Frappé in Alacritty and bat (starship
+**Theme.** One, always dark: Catppuccin Mocha in Alacritty and bat (starship
 and tmux use the terminal's colors), Yaru-dark for GNOME and its apps. There's
 no light mode to switch to.
 

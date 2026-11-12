@@ -1,7 +1,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 # Colors are the terminal's 16 ANSI ones, so the prompt uses Alacritty's
-# Catppuccin Frappé.
+# Catppuccin Mocha.
 
 format = """
 $username\
