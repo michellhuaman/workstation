@@ -7,3 +7,10 @@
   checksum.sha256 = "{{ $sha }}"
   exact = true
 {{ end -}}
+
+# The Catppuccin theme for tmux, pinned to a release tag. tmux.conf loads it
+# directly, so there's no TPM.
+[".config/tmux/plugins/catppuccin/tmux"]
+  type = "git-repo"
+  url = "https://github.com/catppuccin/tmux.git"
+  clone.args = ["--branch", "v2.1.0", "--depth", "1"]
